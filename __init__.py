@@ -12,9 +12,11 @@ def setup(opsdroid):
 @match_regex(r'roll (?P<ndice>\d+)?(?:d(?P<dice>\d+))(?:\+(?P<mod>\d+))?')
 async def rolldice(opsdroid, config, message):
     match = message.regex
-    ndice = int(match.group('ndice'))
+    ndice = match.group('ndice')
+    ndice = int(ndice) if ndice else 1
     dice = int(match.group('dice'))
-    mod = int(match.group('mod'))
+    mod = match.group('mod')
+    mod = int(mod) if mod else 0
 
     rolls = map(partial(randint, 1), [dice]*ndice)
     total = sum(rolls) + mod
