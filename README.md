@@ -1,7 +1,7 @@
 # skill-rolldice
 Simple opsdroid skill to roll dice
 
-Allows you to roll a d4, d6, d8, d10, d12, d20 or d100
+Allows you to roll any number of n sided dice and add a modifier.
 
 # Requirements
 None
@@ -13,6 +13,10 @@ None
 ```
 
 # Usage
-Just type roll and then the dice type. 
+Just type roll and then the number of dice followed by the dice type and any modifier.
 
-eg: rolld4 or rolld20
+The command takes the form:
+`roll [n]d<n>[+n]`
+Where `[]` indicates an optional field, `<>` a required input and n represents an integer.
+
+eg: `roll d4` `roll 5d6` `roll 2d8+2`
