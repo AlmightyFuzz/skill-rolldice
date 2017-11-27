@@ -16,7 +16,7 @@ def setup(opsdroid):
     logging.debug("Loaded dice-roll module")
 
 
-@match_regex(r'[Rr]oll (?P<ndice>\d+)?(?:d(?P<dice>\d+))(?:\+(?P<mod>\d+))?', case_sensitive=False)
+@match_regex(r'roll (?P<ndice>\d+)?(?:d(?P<dice>\d+))(?:\+(?P<mod>\d+))?', case_sensitive=False)
 async def rolldice(opsdroid, config, message):
     match = message.regex
     ndice = match.group('ndice')
