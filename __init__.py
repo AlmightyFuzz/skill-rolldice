@@ -6,11 +6,13 @@ from opsdroid.matchers import match_regex
 
 
 RESPONSE_TEMPLATES = ['{name} rolled {roll}',
-                      'roll for {name} gave {roll}',
-                      'the dice show {roll} for {name}',
-                      'probability gifts {name} with a roll of {roll}',
+                      'Roll for {name} gave {roll}',
+                      'The dice show {roll} for {name}',
+                      'Probability gifts {name} with a roll of {roll}',
                       '{name} got a roll of {roll}']
 
+CRIT_HIT_MESSAGE = 'Critical Hit for {name}! Total: {roll}'
+CRIT_MISS_MESSAGE = 'Oops! Critical miss for {name}! Total: {roll}'
 
 def setup(opsdroid):
     logging.debug("Loaded dice-roll module")
@@ -25,8 +27,22 @@ async def rolldice(opsdroid, config, message):
     mod = match.group('mod')
     mod = int(mod) if mod else 0
 
+    crit = None
+
     rolls = map(partial(randint, 1), [dice]*ndice)
+    rolls = list(rolls)
     total = sum(rolls) + mod
 
-    await message.respond(choice(RESPONSE_TEMPLATES).format(name=message.user,
+    if dice == 20:
+        if 20 in rolls: 
+            crit = 'critHit'
+        if 1 in rolls:
+            crit = 'critMiss'
+
+    if crit == 'critHit':
+        await message.respond(CRIT_HIT_MESSAGE.format(name=message.user, roll=total))
+    elif crit == 'critMiss':
+        await message.respond(CRIT_MISS_MESSAGE.format(name=message.user, roll=total))
+    else:
+        await message.respond(choice(RESPONSE_TEMPLATES).format(name=message.user,
                                                             roll=total))
